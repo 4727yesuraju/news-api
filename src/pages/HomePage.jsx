@@ -19,14 +19,14 @@ const HomePage = () => {
 
 	const fetchnews = async (category="business") => {
 		try {
-			/* dispatch(fetchStart());
+			dispatch(fetchStart());
 			 const res = await fetch(
 				`https://newsdata.io/api/1/latest?apikey=${API_KEY}&category=${category}`
 			);
 			const data = await res.json();
 			console.log(data);
 			setFilteredData([...data.results])
-			dispatch(fetchSuccess([...data.results]));	 */
+			dispatch(fetchSuccess([...data.results]));	
 		} catch (error) {
 			console.log(error.message);
 			fetchFailure(error.message);
