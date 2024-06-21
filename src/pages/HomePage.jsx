@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import RecipeCard from "../components/RecipeCard";
+import NewsCard from "../components/NewsCard";
 import { useEffect, useState } from "react";
 import { getRandomColor } from "../lib/utils";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,16 +15,18 @@ const HomePage = () => {
 	const [filteredData,setFilteredData] = useState(JSON.parse(JSON.stringify(data.articles)));
 	const dispatch = useDispatch();
 
-	const [startIndex,setStartIndex] = useState("");
+	const [startIndex,setStartIndex] = useState(0);
 
-	const fetchnews = async (category="") => {
+	const fetchnews = async (category="business") => {
 		try {
-			dispatch(fetchStart());
+			/* dispatch(fetchStart());
 			 const res = await fetch(
-				`https://newsapi.org/v2/top-headlines?country=us&pageSize=100&category=${category}&apiKey=${API_KEY}`
+				`https://newsdata.io/api/1/latest?apikey=${API_KEY}&category=${category}`
 			);
 			const data = await res.json();
-			dispatch(fetchSuccess([...data.articles]));	
+			console.log(data);
+			setFilteredData([...data.results])
+			dispatch(fetchSuccess([...data.results]));	 */
 		} catch (error) {
 			console.log(error.message);
 			fetchFailure(error.message);
@@ -32,7 +34,7 @@ const HomePage = () => {
 	};
 
 	useEffect(() => {
-		fetchnews("");
+		fetchnews();
 	}, []);
 
 	useEffect(()=>{
@@ -40,7 +42,7 @@ const HomePage = () => {
 	},[filteredData,startIndex])
 
 
-	const handleSearchRecipe = (e) => {
+	const handleSearchNews = (e) => {
 		e.preventDefault();
 		setStartIndex(0);
 		setFilteredData([...data.articles.filter(article=>article.title.toLowerCase().includes(e.target[0].value.toLowerCase()))]);
@@ -52,14 +54,14 @@ const HomePage = () => {
 	}
 
 	function renderPage(e){
-		setStartIndex(e.target.ariaLabel * 5);
-		dispatch(setArticlesPerPage(e.target.ariaLabel * 5))
+		setStartIndex(e.target.ariaLabel * 4);
+		dispatch(setArticlesPerPage(e.target.ariaLabel * 4))
 	}
 	
 	return (
 		<div className='bg-[#faf9fb] p-10 flex-1'>
 			<div className='max-w-screen-lg mx-auto'>
-				<form onSubmit={handleSearchRecipe} className="flex items-center gap-2">
+				<form onSubmit={handleSearchNews} className="flex items-center gap-2">
 					<label className='input shadow-md flex items-center gap-2 flex-1'>
 						<Search size={"24"} />
 						<input
@@ -84,8 +86,8 @@ const HomePage = () => {
 				<div className='grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
 					
 					{!data.loading && data.articles.length > 0 &&
-						data.articlesPerPage?.map((recipe) => (
-							<RecipeCard key={recipe.publishedAt} recipe={recipe} {...getRandomColor()} />
+						data.articlesPerPage?.map((news) => (
+							<NewsCard key={news.article_id} news={news} {...getRandomColor()} />
 						))}
 
 					{data.loading &&
@@ -110,10 +112,10 @@ const HomePage = () => {
 			</div>
 
 			{/* pagination */}
-			{filteredData?.length>5 && <div className="join flex justify-center py-5">
+			{filteredData?.length>4 && <div className="join flex justify-center py-5">
 				   {
-					 [... new Array(Math.ceil(filteredData.length/5))].map((i,_ind)=>{
-						return <input key={_ind} className="join-item btn btn-square" type="radio" name="options" aria-label={_ind} checked={startIndex/5 == _ind} onChange={renderPage} />
+					 [... new Array(Math.ceil(filteredData.length/4))].map((i,_ind)=>{
+						return <input key={_ind} className="join-item btn btn-square" type="radio" name="options" aria-label={_ind} checked={startIndex/4 == _ind} onChange={renderPage} />
 					 })
 				   }
 			</div>}

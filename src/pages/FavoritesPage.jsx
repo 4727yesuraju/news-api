@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import RecipeCard from "../components/RecipeCard";
+import NewsCard from "../components/NewsCard";
 import { getRandomColor } from "../lib/utils";
 import { Search } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,10 +20,10 @@ const FavoritesPage = () => {
 	},[filteredFavorites,startIndex])
 
 	function setStartIndexValue(e){
-		setStartIndex(e.target.ariaLabel * 5);
+		setStartIndex(e.target.ariaLabel * 4);
 	}
 
-	const handleSearchRecipe = (e) => {
+	const handleSearchNews = (e) => {
 		e.preventDefault();
 		setStartIndex(0);
 		setFilteredFavorites([...favorites.filter(article=>article.title.toLowerCase().includes(e.target[0].value.toLowerCase()))]);
@@ -32,7 +32,7 @@ const FavoritesPage = () => {
 
 	return (
 		<div className='bg-[#faf9fb] flex-1 p-10 min-h-screen'>
-			<form onSubmit={handleSearchRecipe} className="flex items-center gap-2">
+			<form onSubmit={handleSearchNews} className="flex items-center gap-2">
 					<label className='input shadow-md flex items-center gap-2 flex-1'>
 						<Search size={"24"} />
 						<input
@@ -52,16 +52,16 @@ const FavoritesPage = () => {
 				)}
 
 				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-						{data.favoriteArticlePerPage.map((recipe) => (
-						<RecipeCard key={recipe.publishedAt} recipe={recipe} {...getRandomColor()} />
+						{data.favoriteArticlePerPage.map((news) => (
+						<NewsCard key={news.article_id} news={news} {...getRandomColor()} />
 					))}
 				</div>
 
 				{/* pagination */}
-			{filteredFavorites.length>5 && <div className="join flex justify-center py-5">
+			{filteredFavorites.length>4 && <div className="join flex justify-center py-5">
 				   {
-					 [... new Array(Math.ceil(filteredFavorites.length/5))].map((i,_ind)=>{
-						return <input key={_ind} className="join-item btn btn-square" type="radio" name="options" aria-label={_ind} checked={startIndex/5 == _ind} onChange={setStartIndexValue} />
+					 [... new Array(Math.ceil(filteredFavorites.length/4))].map((i,_ind)=>{
+						return <input key={_ind} className="join-item btn btn-square" type="radio" name="options" aria-label={_ind} checked={startIndex/4 == _ind} onChange={setStartIndexValue} />
 					 })
 				   }
 			</div>}

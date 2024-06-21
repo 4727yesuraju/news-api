@@ -19,7 +19,7 @@ const dataSlice = createSlice({
     },
     fetchSuccess: (state, action) => {
       state.articles = action.payload;
-      state.articlesPerPage = action.payload.slice(0,5);
+      state.articlesPerPage = action.payload.slice(0,4);
       state.loading = false;
       state.error = null;
     },
@@ -28,13 +28,13 @@ const dataSlice = createSlice({
       state.loading = false;
     },
     setArticlesPerPage : (state,action)=>{
-      state.articlesPerPage = action.payload.filteredData?.slice(action.payload.startIndex,action.payload.startIndex+5);
+      state.articlesPerPage = action.payload.filteredData?.slice(action.payload.startIndex,action.payload.startIndex+4);
     },
     setFavoriteArticle : (state,action)=>{
       state.favoriteArticle = action.payload;
     },
     setFavoriteArticlesPerPage : (state,action)=>{
-      state.favoriteArticlePerPage = action.payload.filteredFavorites.slice(action.payload.startIndex,action.payload.startIndex+5);
+      state.favoriteArticlePerPage = action.payload.filteredFavorites.slice(action.payload.startIndex,action.payload.startIndex+4);
     },
   },
 });
